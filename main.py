@@ -10,10 +10,15 @@ from flask_login import UserMixin, login_user, LoginManager, current_user, logou
 from forms import CreatePostForm, Login, RegisterForm, CommentForm
 import hashlib
 from smtplib import SMTP
+from dotenv import load_dotenv
+import os
 
-from_address = "mailsenderpython43@gmail.com"
-to_address = "suhudhuthewriter@gmail.com"
-pass_word = "ehjc pjxx vmae qurn"
+
+load_dotenv()
+
+from_address = os.getenv("FROM")
+to_address = os.getenv("TO")
+pass_word = os.getenv("PASSWORD")
 
 connection = SMTP("smtp.gmail.com", 587)
 connection.starttls()
@@ -21,7 +26,7 @@ connection.login(user=from_address, password=pass_word)
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.getenv("SECRETKEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
