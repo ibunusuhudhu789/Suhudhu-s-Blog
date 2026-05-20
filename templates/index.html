@@ -3,12 +3,9 @@
 <!-- Minimal Hero -->
 <header class="minimal-hero">
     <div class="hero-overlay"></div>
-
     <div class="hero-content animate-in">
         <span class="hero-label">DESIGN FOR LIFE</span>
-
         <h1>Suhudhu's Blog</h1>
-
         <p>
             Thoughts, stories, chaos, emotions, and everything in between.
         </p>
@@ -18,11 +15,8 @@
 <!-- Editorial Blog Layout -->
 <section class="editorial-section">
     <div class="container">
-
         <div class="editorial-grid">
-
             {% for post in all_posts %}
-
             <article class="editorial-card animate-in delay-{{ loop.index }}">
 
                 <!-- IMAGE -->
@@ -34,51 +28,38 @@
 
                 <!-- CONTENT -->
                 <div class="editorial-content">
-
                     <div class="editorial-meta">
                         <span>{{ post.date }}</span>
                         <span class="dot"></span>
                         <span>{{ post.user.name }}</span>
                     </div>
-
                     <a href="{{ url_for('show_post', post_id=post.id) }}" class="editorial-link">
                         <h2 class="editorial-title">
                             {{ post.title }}
                         </h2>
-
                         <p class="editorial-subtitle">
                             {{ post.subtitle }}
                         </p>
                     </a>
-
                     <div class="editorial-footer">
-
                         <a href="{{ url_for('show_post', post_id=post.id) }}"
                            class="read-more">
                             Read More
                         </a>
-
                         {% if current_user.id == 1 %}
                         <a href="{{ url_for('delete_post', post_id=post.id) }}"
                            class="delete-btn">
                             <i class="fas fa-trash"></i>
                         </a>
                         {% endif %}
-
                     </div>
-
                 </div>
-
             </article>
-
             {% else %}
-
             <div class="text-center empty-posts">
                 <p>No posts yet. Be the first to write something.</p>
             </div>
-
             {% endfor %}
-
         </div>
 
         <!-- New Post -->
@@ -90,7 +71,6 @@
             </a>
         </div>
         {% endif %}
-
     </div>
 </section>
 
