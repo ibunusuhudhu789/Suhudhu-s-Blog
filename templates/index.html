@@ -1,0 +1,97 @@
+{% include "header.html" %}
+
+<!-- Minimal Hero -->
+<header class="minimal-hero">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content animate-in">
+        <span class="hero-label">DESIGN FOR LIFE</span>
+
+        <h1>Suhudhu's Blog</h1>
+
+        <p>
+            Thoughts, stories, chaos, emotions, and everything in between.
+        </p>
+    </div>
+</header>
+
+<!-- Editorial Blog Layout -->
+<section class="editorial-section">
+    <div class="container">
+
+        <div class="editorial-grid">
+
+            {% for post in all_posts %}
+
+            <article class="editorial-card animate-in delay-{{ loop.index }}">
+
+                <!-- IMAGE -->
+                <div class="editorial-image-wrap">
+                    <a href="{{ url_for('show_post', post_id=post.id) }}">
+                        <img src="{{ post.img_url }}" alt="{{ post.title }}" class="editorial-image">
+                    </a>
+                </div>
+
+                <!-- CONTENT -->
+                <div class="editorial-content">
+
+                    <div class="editorial-meta">
+                        <span>{{ post.date }}</span>
+                        <span class="dot"></span>
+                        <span>{{ post.user.name }}</span>
+                    </div>
+
+                    <a href="{{ url_for('show_post', post_id=post.id) }}" class="editorial-link">
+                        <h2 class="editorial-title">
+                            {{ post.title }}
+                        </h2>
+
+                        <p class="editorial-subtitle">
+                            {{ post.subtitle }}
+                        </p>
+                    </a>
+
+                    <div class="editorial-footer">
+
+                        <a href="{{ url_for('show_post', post_id=post.id) }}"
+                           class="read-more">
+                            Read More
+                        </a>
+
+                        {% if current_user.id == 1 %}
+                        <a href="{{ url_for('delete_post', post_id=post.id) }}"
+                           class="delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </article>
+
+            {% else %}
+
+            <div class="text-center empty-posts">
+                <p>No posts yet. Be the first to write something.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- New Post -->
+        {% if current_user.id == 1 %}
+        <div class="create-post-wrap animate-in">
+            <a class="btn btn-primary" href="{{ url_for('add_new_post') }}">
+                <i class="fas fa-plus" style="font-size:0.75rem;"></i>
+                New Post
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% include "footer.html" %}

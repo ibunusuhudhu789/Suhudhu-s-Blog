@@ -1,0 +1,39 @@
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 text-center">
+                <a class="footer-brand" href="{{ url_for('get_all_posts') }}">
+                    Suhudhu<span>'s</span> Blog
+                </a>
+                <nav class="footer-links">
+                    <a href="{{ url_for('get_all_posts') }}">Home</a>
+                    <a href="{{ url_for('about') }}">About</a>
+                    <a href="{{ url_for('contact') }}">Contact</a>
+                </nav>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+                <p class="footer-copy">&copy; 2026 Suhudhu's Blog. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+<!-- Clean Blog JS (kept for compatibility) -->
+<script src="{{ url_for('static', filename='js/clean-blog.min.js') }}"></script>
+
+</body>
+</html>

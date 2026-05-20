@@ -1,0 +1,92 @@
+{% include "header.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+<!-- Post Header -->
+<header class="masthead" style="background-image: url('{{ post.img_url }}')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-heading animate-in">
+                    <h1>{{ post.title }}</h1>
+                    <h2 class="subheading">{{ post.subtitle }}</h2>
+                    <span class="meta">
+              By <a href="#">{{ post.user.name }}</a> &mdash; {{ post.date }}
+            </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="section-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+
+                    <div class="post-body animate-in">
+                        {{ post.body | safe }}
+                    </div>
+
+                    <!-- Admin Actions -->
+                    {% if current_user.id == 1 %}
+                    <div class="post-actions animate-in delay-1">
+                        <a class="btn btn-secondary" href="{{ url_for('edit_post', post_id=post.id) }}">
+                            <i class="fas fa-pen" style="font-size:0.7rem;"></i> Edit Post
+                        </a>
+                        <a class="btn btn-danger" href="{{ url_for('delete_post', post_id=post.id) }}">
+                            <i class="fas fa-trash" style="font-size:0.7rem;"></i> Delete Post
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Comments -->
+                    {% if comment is not none %}
+                    <div class="comments-section animate-in delay-2">
+                        <p class="comments-title">
+                            <i class="fas fa-comment-alt"
+                               style="font-size:0.85rem; margin-right:0.4rem; color:var(--accent);"></i>
+                            Comments
+                        </p>
+                        {% for i in comment %}
+                        {% if i.blog_post.id == id %}
+                        <div class="comment-item">
+                            <div class="comment-avatar">
+                                <img src="{{ gravatar_url(i.user.email) }}" alt="{{ i.user.name }}">
+                            </div>
+                            <div class="comment-body">
+                                <div class="comment-author">{{ i.user.name }}</div>
+                                <p class="comment-text">{{ i.comment }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- Comment Form (logged in users) -->
+{% if not current_user.is_anonymous %}
+<div style="padding-bottom: 3rem;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="form-card animate-in delay-3">
+                    <h3 style="font-size:1.1rem; font-weight:600; color:var(--text-secondary); margin-bottom:1.5rem;">
+                        Leave a Comment
+                    </h3>
+                    {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% include "footer.html" %}

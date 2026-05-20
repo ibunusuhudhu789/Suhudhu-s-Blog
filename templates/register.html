@@ -1,0 +1,26 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "header.html" %}
+
+
+<!-- Auth Wrap -->
+<div class="auth-wrap">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8 mx-auto">
+                <div class="auth-card animate-in">
+                    <!-- Icon -->
+                    <div class="text-center" style="margin-bottom: 1.5rem;">
+                        <div style="width:56px; height:56px; border-radius:50%; background:var(--accent-glow); border:1px solid var(--border); display:inline-flex; align-items:center; justify-content:center; margin: 0 auto;">
+                            <i class="fas fa-user-plus" style="color:var(--accent); font-size:1.2rem;"></i>
+                        </div>
+                    </div>
+                    <h1 class="auth-title">Welcome</h1>
+                    <p class="auth-sub">Register your account to continue</p>
+                    {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}

@@ -1,0 +1,42 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "header.html" %}
+
+<!-- Auth Wrap -->
+<div class="auth-wrap">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8 mx-auto">
+                <div class="auth-card animate-in">
+
+                    <!-- Icon -->
+                    <div class="text-center" style="margin-bottom: 1.5rem;">
+                        <div style="width:56px; height:56px; border-radius:50%; background:var(--accent-glow); border:1px solid var(--border); display:inline-flex; align-items:center; justify-content:center; margin: 0 auto;">
+                            <i class="fas fa-lock" style="color:var(--accent); font-size:1.2rem;"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="auth-title">Welcome Back</h1>
+                    <p class="auth-sub">Sign in to your account to continue</p>
+
+                    <!-- Flash messages -->
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                        <div class="flash-msg">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+                    <p class="auth-footer-text">
+                        Don't have an account? <a href="/register">Register here</a>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
