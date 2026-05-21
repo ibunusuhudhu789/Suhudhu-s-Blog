@@ -9,7 +9,6 @@ from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user, login_required
 from forms import CreatePostForm, Login, RegisterForm, CommentForm
 import hashlib
-from smtplib import SMTP
 from dotenv import load_dotenv
 import os
 import sendgrid
