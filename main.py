@@ -15,10 +15,6 @@ import os
 
 load_dotenv()
 
-from_address = os.getenv("FROM")
-to_address = os.getenv("TO")
-pass_word = os.getenv("PASSWORD")
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRETKEY")
 ckeditor = CKEditor(app)
@@ -183,18 +179,30 @@ def contact():
         phone_no = request.form["num"]
         message = request.form["msg"]
         try:
-            connection = SMTP("smtp.gmail.com", 587)
-            connection.starttls()
-            connection.login(user=from_address, password=pass_word)
-            connection.sendmail(from_addr=from_address, to_addrs=to_address, msg=f"subject:Need to contact you.\n\nThe "
-                                                                                 f"details about the user is given below.\n"
-                                                                                 f"Name:{name}\nEmail:{email},\nContact:"
-                                                                                 f"{phone_no}\nMessage:{message}\n\n\n"
-                                                                                 f"Thank you!!!")
-            return redirect(url_for("get_all_posts"))
+            with SMTP("smtp.gmail.com", 587) as connection:
+                connection.starttls()
+                from_address = os.getenv("FROM")
+                to_address = os.getenv("TO")
+                pass_word = os.getenv("PASSWORD")
+                connection.login(
+                    user=from_address,
+                    password=pass_word
+                )
+                connection.sendmail(
+                    from_addr=from_address,
+                    to_addrs=to_address,
+                    msg=f"Subject:Need to contact you\n\n"
+                        f"The details about the user are given below.\n\n"
+                        f"Name: {name}\n"
+                        f"Email: {email}\n"
+                        f"Contact: {phone_no}\n\n"
+                        f"Message:\n{message}\n\n"
+                        f"Thank you!"
+                )
+                return redirect(url_for("get_all_posts"))
         except Exception as e:
             print(e)
-            return "Something went wrong while sending email."
+            return str(e)
 
     return render_template("contact.html")
 
