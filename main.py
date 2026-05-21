@@ -13,13 +13,11 @@ from smtplib import SMTP
 from dotenv import load_dotenv
 import os
 
-
 load_dotenv()
 
 from_address = os.getenv("FROM")
 to_address = os.getenv("TO")
 pass_word = os.getenv("PASSWORD")
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRETKEY")
@@ -42,11 +40,9 @@ def gravatar_url(email):
 
 app.jinja_env.globals['gravatar_url'] = gravatar_url
 
-
 # CONNECT THE FLASK_LOGIN
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 new_or_edit = None
 
@@ -97,6 +93,7 @@ def admin_only(f):
             return f(*args, **kwargs)
         else:
             return abort(403)
+
     return wrapper
 
 
@@ -180,15 +177,20 @@ def contact():
         email = request.form["email"]
         phone_no = request.form["num"]
         message = request.form["msg"]
-        connection = SMTP("smtp.gmail.com", 587)
-        connection.starttls()
-        connection.login(user=from_address, password=pass_word)
-        connection.sendmail(from_addr=from_address, to_addrs=to_address, msg=f"subject:Need to contact you.\n\nThe "
-                                                                             f"details about the user is given below.\n"
-                                                                             f"Name:{name}\nEmail:{email},\nContact:"
-                                                                             f"{phone_no}\nMessage:{message}\n\n\n"
-                                                                             f"Thank you!!!")
-        return redirect(url_for("get_all_posts"))
+        try:
+            connection = SMTP("smtp.gmail.com", 587)
+            connection.starttls()
+            connection.login(user=from_address, password=pass_word)
+            connection.sendmail(from_addr=from_address, to_addrs=to_address, msg=f"subject:Need to contact you.\n\nThe "
+                                                                                 f"details about the user is given below.\n"
+                                                                                 f"Name:{name}\nEmail:{email},\nContact:"
+                                                                                 f"{phone_no}\nMessage:{message}\n\n\n"
+                                                                                 f"Thank you!!!")
+            return redirect(url_for("get_all_posts"))
+        except Exception as e:
+            print(e)
+            return "Something went wrong while sending email."
+
     return render_template("contact.html")
 
 
