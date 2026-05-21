@@ -3,8 +3,6 @@ from flask import Flask, render_template, redirect, url_for, flash, abort, reque
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
-
-from gunicorn.util import parse_address
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
@@ -14,6 +12,8 @@ import hashlib
 from smtplib import SMTP
 from dotenv import load_dotenv
 import os
+import sendgrid
+from sendgrid.helpers.mail import Mail
 
 load_dotenv()
 
@@ -181,31 +181,17 @@ def contact():
         phone_no = request.form["num"]
         message = request.form["msg"]
         try:
-            with SMTP("smtp.gmail.com", 587) as connection:
-                connection.starttls()
-                from_address = os.getenv("FROM")
-                to_address = os.getenv("TO")
-                pass_word = os.getenv("PASSWORD")
-                print(from_address, to_address, pass_word)
-                connection.login(
-                    user=from_address,
-                    password=pass_word
-                )
-                connection.sendmail(
-                    from_addr=from_address,
-                    to_addrs=to_address,
-                    msg=f"Subject:Need to contact you\n\n"
-                        f"The details about the user are given below.\n\n"
-                        f"Name: {name}\n"
-                        f"Email: {email}\n"
-                        f"Contact: {phone_no}\n\n"
-                        f"Message:\n{message}\n\n"
-                        f"Thank you!"
-                )
-                return redirect(url_for("get_all_posts"))
+            sendmail = sendgrid.SendGridAPIClient(api_key=os.getenv("APIKEY"))
+            mail = Mail(from_email=os.getenv("FROM"),
+                        to_emails=os.getenv("TO"),
+                        subject="This user needs to contact you!",
+                        plain_text_content=f"Name: {name}\nEmail: {email}\nPhone no: {phone_no}\nMessage: {message}")
+            sendmail.send(mail)
+            return redirect(url_for("get_all_posts"))
         except Exception as e:
-            print(e)
-            return f"ERROR: {e}"
+            app.logger.error(f"Email error: {e}")
+            flash("Failed to send message. Please try again later.")
+            return redirect(url_for("contact"))
 
     return render_template("contact.html")
 

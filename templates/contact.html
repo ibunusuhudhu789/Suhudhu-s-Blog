@@ -24,6 +24,15 @@
                     Have something on your mind? Fill out the form below and I'll get back to you as soon as possible.
                 </p>
                 <div class="form-card animate-in delay-1">
+                   {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                        <div class="flash-msg">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
                     <form name="sentMessage" id="contactForm" action="/contact" method="post" novalidate>
                         <div class="row">
                             <div class="col-md-6">
