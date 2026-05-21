@@ -20,10 +20,6 @@ from_address = os.getenv("FROM")
 to_address = os.getenv("TO")
 pass_word = os.getenv("PASSWORD")
 
-connection = SMTP("smtp.gmail.com", 587)
-connection.starttls()
-connection.login(user=from_address, password=pass_word)
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRETKEY")
@@ -184,6 +180,9 @@ def contact():
         email = request.form["email"]
         phone_no = request.form["num"]
         message = request.form["msg"]
+        connection = SMTP("smtp.gmail.com", 587)
+        connection.starttls()
+        connection.login(user=from_address, password=pass_word)
         connection.sendmail(from_addr=from_address, to_addrs=to_address, msg=f"subject:Need to contact you.\n\nThe "
                                                                              f"details about the user is given below.\n"
                                                                              f"Name:{name}\nEmail:{email},\nContact:"
