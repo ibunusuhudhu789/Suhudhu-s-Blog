@@ -25,7 +25,7 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\Users\\ibunu\\PycharmProjects\\final_blog_project\\blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
