@@ -3,6 +3,8 @@ from flask import Flask, render_template, redirect, url_for, flash, abort, reque
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
+
+from gunicorn.util import parse_address
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
@@ -184,6 +186,7 @@ def contact():
                 from_address = os.getenv("FROM")
                 to_address = os.getenv("TO")
                 pass_word = os.getenv("PASSWORD")
+                print(from_address, to_address, pass_word)
                 connection.login(
                     user=from_address,
                     password=pass_word
@@ -202,7 +205,7 @@ def contact():
                 return redirect(url_for("get_all_posts"))
         except Exception as e:
             print(e)
-            return str(e)
+            return f"ERROR: {e}"
 
     return render_template("contact.html")
 
